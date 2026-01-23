@@ -1,0 +1,21 @@
+name: GoatRider
+version: ${project.version}
+main: su.brim.goatrider.GoatRiderPlugin
+api-version: '1.21'
+folia-supported: true
+description: Ride goats like horses in Minecraft
+author: Brim
+
+commands:
+  goatrider:
+    description: GoatRider plugin commands
+    usage: /<command> [reload]
+    aliases: [gr]
+
+permissions:
+  goatrider.ride:
+    description: Allows riding goats
+    default: true
+  goatrider.admin:
+    description: Allows reloading the plugin
+    default: op
