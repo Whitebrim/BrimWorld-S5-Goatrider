@@ -3,7 +3,12 @@ package su.brim.goatrider.manager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.EntityType;
 import su.brim.goatrider.GoatRiderPlugin;
+
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 
 public class ConfigManager {
 
@@ -17,6 +22,10 @@ public class ConfigManager {
     private int extraJumps;
     private double ramDamage;
     private boolean ramEnabled;
+    private double sprintMultiplier;
+    private long doubleTapTime;
+    private Set<EntityType> ramBlacklist;
+    private double fallProtectionDistance;
     
     // Сообщения
     private String prefix;
@@ -43,6 +52,21 @@ public class ConfigManager {
         extraJumps = config.getInt("extra-jumps", 1);
         ramDamage = config.getDouble("ram-damage", 4.0);
         ramEnabled = config.getBoolean("ram-enabled", true);
+        sprintMultiplier = config.getDouble("sprint.multiplier", 1.5);
+        doubleTapTime = config.getLong("sprint.double-tap-time", 300);
+        fallProtectionDistance = config.getDouble("fall-protection-distance", 500.0);
+        
+        // Загрузка blacklist для тарана
+        ramBlacklist = EnumSet.noneOf(EntityType.class);
+        List<String> blacklistStrings = config.getStringList("ram-blacklist");
+        for (String typeName : blacklistStrings) {
+            try {
+                EntityType type = EntityType.valueOf(typeName.toUpperCase());
+                ramBlacklist.add(type);
+            } catch (IllegalArgumentException e) {
+                plugin.getLogger().warning("Неизвестный тип сущности в ram-blacklist: " + typeName);
+            }
+        }
         
         // Загрузка сообщений
         prefix = config.getString("messages.prefix", "&8[&6GoatRider&8] ");
@@ -89,6 +113,22 @@ public class ConfigManager {
 
     public boolean isRamEnabled() {
         return ramEnabled;
+    }
+
+    public double getSprintMultiplier() {
+        return sprintMultiplier;
+    }
+
+    public long getDoubleTapTime() {
+        return doubleTapTime;
+    }
+
+    public boolean isInRamBlacklist(EntityType type) {
+        return ramBlacklist.contains(type);
+    }
+
+    public double getFallProtectionDistance() {
+        return fallProtectionDistance;
     }
 
     // Геттеры для сообщений

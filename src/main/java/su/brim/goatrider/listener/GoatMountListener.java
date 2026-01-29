@@ -90,7 +90,7 @@ public class GoatMountListener implements Listener {
         Entity entity = event.getEntity();
 
         // Проверяем, что игрок слез с козла
-        if (!(dismounted instanceof Goat) || !(entity instanceof Player player)) {
+        if (!(dismounted instanceof Goat goat) || !(entity instanceof Player player)) {
             return;
         }
 
@@ -98,6 +98,13 @@ public class GoatMountListener implements Listener {
         if (ridingManager.isRiding(player)) {
             ridingManager.removeRider(player);
             player.sendMessage(config.formatMessage(config.getDismountSuccess()));
+            
+            // Удаляем модификатор у козла через его scheduler для Folia-совместимости
+            goat.getScheduler().run(plugin, task -> {
+                if (goat.isValid()) {
+                    ridingManager.cleanupGoat(goat);
+                }
+            }, null);
         }
     }
 }

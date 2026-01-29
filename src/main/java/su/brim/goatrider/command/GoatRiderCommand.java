@@ -64,6 +64,7 @@ public class GoatRiderCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(config.formatRawMessage("&7Активных наездников: &f" + plugin.getRidingManager().getRiderCount()));
         sender.sendMessage(config.formatRawMessage("&7Требуется седло: &f" + (config.isRequireSaddle() ? "Да" : "Нет")));
         sender.sendMessage(config.formatRawMessage("&7Скорость: &f" + config.getSpeed()));
+        sender.sendMessage(config.formatRawMessage("&7Множитель спринта: &f" + config.getSprintMultiplier() + "x"));
         sender.sendMessage(config.formatRawMessage("&7Сила прыжка: &f" + config.getJumpStrength()));
         sender.sendMessage(config.formatRawMessage("&7Мульти-прыжок: &f" + (config.isMultiJump() ? "Да (" + config.getExtraJumps() + " доп.)" : "Нет")));
         sender.sendMessage(config.formatRawMessage("&7Урон тарана: &f" + (config.isRamEnabled() ? config.getRamDamage() : "Выключен")));
@@ -75,9 +76,12 @@ public class GoatRiderCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(config.formatRawMessage("&e/gr info &7- Информация о плагине"));
         sender.sendMessage(config.formatRawMessage("&e/gr help &7- Показать эту справку"));
         sender.sendMessage(config.formatRawMessage(""));
-        sender.sendMessage(config.formatRawMessage("&7&oПКМ по козлу - сесть на него"));
-        sender.sendMessage(config.formatRawMessage("&7&oShift - прыжок"));
-        sender.sendMessage(config.formatRawMessage("&7&oWASD - управление движением"));
+        sender.sendMessage(config.formatRawMessage("&6Управление:"));
+        sender.sendMessage(config.formatRawMessage("&7• &fПКМ по козлу &7- сесть"));
+        sender.sendMessage(config.formatRawMessage("&7• &fWASD &7- движение"));
+        sender.sendMessage(config.formatRawMessage("&7• &fПробел &7- прыжок"));
+        sender.sendMessage(config.formatRawMessage("&7• &fДвойное W &7- спринт (ускорение)"));
+        sender.sendMessage(config.formatRawMessage("&7• &fShift &7- слезть"));
     }
 
     @Override

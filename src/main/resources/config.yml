@@ -16,11 +16,31 @@ multi-jump: true
 # Количество дополнительных прыжков в воздухе (если multi-jump: true)
 extra-jumps: 1
 
+# Настройки спринта (ускорения)
+sprint:
+  # Множитель скорости при спринте
+  multiplier: 1.3
+  # Максимальное время между нажатиями W для активации спринта (в миллисекундах)
+  double-tap-time: 300
+
 # Урон от тарана козла при езде
 ram-damage: 4.0
 
 # Включить урон от тарана
 ram-enabled: true
+
+# Дополнительная высота падения без урона при езде на козле (в блоках)
+# Добавляется к базовому значению 3 блока, т.е. при значении 500 игрок может упасть с 503 блоков
+fall-protection-distance: 5
+
+# Чёрный список мобов, которым не наносится урон тараном
+# Доступные типы: GOAT, WOLF, CAT, ALLAY, PARROT, HORSE, DONKEY, MULE, LLAMA, VILLAGER, IRON_GOLEM, SNOW_GOLEM, BEE, FOX, AXOLOTL, FROG, SNIFFER
+ram-blacklist:
+  - GOAT
+  - WOLF
+  - CAT
+  - ALLAY
+  - HAPPY_GHAST
 
 # Сообщения
 messages:

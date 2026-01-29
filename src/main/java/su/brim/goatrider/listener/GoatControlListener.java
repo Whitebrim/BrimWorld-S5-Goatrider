@@ -71,8 +71,11 @@ public class GoatControlListener implements Listener {
             // Получаем ввод игрока через Paper API
             var input = player.getCurrentInput();
             
+            // Обновляем состояние спринта (double-tap W или кнопка спринта)
+            boolean isSprinting = ridingManager.updateSprintState(player, input.isForward(), input.isSprint());
+            
             // Рассчитываем движение на основе ввода
-            Vector movement = calculateMovement(player, goat, input);
+            Vector movement = calculateMovement(player, goat, input, isSprinting);
             
             // Обрабатываем прыжок
             if (input.isJump()) {
@@ -87,7 +90,7 @@ public class GoatControlListener implements Listener {
             // Применяем движение, если есть ввод
             if (movement.lengthSquared() > 0.001) {
                 // Проверяем столкновение для урона тараном
-                if (config.isRamEnabled() && input.isForward()) {
+                if (config.isRamEnabled() && input.isForward() && isSprinting) {
                     checkRamCollision(goat, player, movement);
                 }
                 
@@ -104,7 +107,7 @@ public class GoatControlListener implements Listener {
     /**
      * Рассчитывает вектор движения на основе ввода игрока.
      */
-    private Vector calculateMovement(Player player, Goat goat, org.bukkit.Input input) {
+    private Vector calculateMovement(Player player, Goat goat, org.bukkit.Input input, boolean isSprinting) {
         // Получаем направление взгляда игрока (горизонтальное)
         Vector direction = player.getLocation().getDirection();
         direction.setY(0);
@@ -119,9 +122,9 @@ public class GoatControlListener implements Listener {
         Vector movement = new Vector(0, 0, 0);
         double speed = config.getSpeed();
 
-        // Применяем спринт
-        if (input.isSprint()) {
-            speed *= 1.3;
+        // Применяем спринт (double-tap W)
+        if (isSprinting) {
+            speed *= config.getSprintMultiplier();
         }
 
         // W - вперёд
@@ -185,6 +188,11 @@ public class GoatControlListener implements Listener {
             }
             
             if (!(entity instanceof LivingEntity target)) {
+                continue;
+            }
+            
+            // Проверяем blacklist
+            if (config.isInRamBlacklist(entity.getType())) {
                 continue;
             }
 
