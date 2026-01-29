@@ -46,6 +46,11 @@ public class GoatMountListener implements Listener {
 
         Player player = event.getPlayer();
 
+        // Если игрок держит Shift - пропускаем, чтобы разрешить ванильные действия (привязка поводка и т.д.)
+        if (player.isSneaking()) {
+            return;
+        }
+
         // Проверяем права
         if (!player.hasPermission("goatrider.ride")) {
             player.sendMessage(config.formatMessage(config.getNoPermission()));
